@@ -3,7 +3,7 @@ RECON_DIR="/root/recon"
 
 TARGET_DIR="$RECON_DIR/$TARGET"
 
-echo "Enumerating subdomains for target: $TARGET" | notify -id general
+echo "Enumerating subdomains for target: **$TARGET**" | notify -id general
 
 if [ ! -d "$TARGET_DIR/.tmp" ]; then
     echo "Creating $TARGET_DIR/.tmp"
