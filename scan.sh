@@ -1,3 +1,5 @@
+#!/bin/bash
+
 TARGET=$1
 RECON_DIR="/root/recon"
 
@@ -10,17 +12,17 @@ if [ ! -d "$TARGET_DIR/.tmp" ]; then
     mkdir "$TARGET_DIR/.tmp"
 fi;
 
-cp "$TARGET_DIR/subfinder.txt" "$TARGET_DIR/.tmp/subfinder.txt"
+cp "$TARGET_DIR/subdomains.txt" "$TARGET_DIR/.tmp/subdomains.txt"
 
-subfinder -v -dL $TARGET_DIR/wildcards.txt -o $TARGET_DIR/subfinder.txt && echo "Done running subfinder"
+subfinder -v -dL $TARGET_DIR/wildcards.txt -o $TARGET_DIR/subdomains.txt && echo "Done running subdomains"
 
-cat $TARGET_DIR/subfinder.txt | sort -u -o $TARGET_DIR/subfinder.txt
+cat $TARGET_DIR/subdomains.txt | sort -u -o $TARGET_DIR/subdomains.txt
 
-comm -3 "$TARGET_DIR/subfinder.txt" "$TARGET_DIR/.tmp/subfinder.txt" > "$TARGET_DIR/.tmp/subfinder.comm"
+cat $TARGET_DIR/subdomains.txt | anew $TARGET_DIR/.tmp/subdomains.txt > $TARGET_DIR/.tmp/subdomains.new
 
-if [ -s "$TARGET_DIR/.tmp/subfinder.comm" ];then
-    NUM_SUBDOMAINS=$(wc -l "$TARGET_DIR/.tmp/subfinder.comm" | awk '{print $1}')
-    echo "Found new $NUM_SUBDOMAINS subdomains for target: **$TARGET**" | notify -id general
+if [ -s "$TARGET_DIR/.tmp/subdomains.new" ];then
+    NUM_SUBDOMAINS=$(wc -l "$TARGET_DIR/.tmp/subdomains.new" | awk '{print $1}')
+    echo "Found $NUM_SUBDOMAINS new subdomains for target: **$TARGET**" | notify -id general
 else
     echo "No new subdomains found for target: **$TARGET**" | notify -id general
 fi;
