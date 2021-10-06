@@ -1,4 +1,5 @@
-TARGET=$1                                                                                                                                                                                 RECON_DIR="/root/recon"
+TARGET=$1
+RECON_DIR="/root/recon"
 
 TARGET_DIR="$RECON_DIR/$TARGET"
 
