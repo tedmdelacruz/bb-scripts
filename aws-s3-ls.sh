@@ -1,0 +1,5 @@
+buckets_file=$1
+while IFS= read -r bucket; do
+    echo "Listing contents of $bucket";
+    aws s3 ls s3://$bucket;
+done < "$buckets_file"
