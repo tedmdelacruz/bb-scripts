@@ -1,3 +1,5 @@
+#!/bin/bash
+
 buckets_file=$1
 while IFS= read -r bucket; do
     echo "Listing contents of $bucket";

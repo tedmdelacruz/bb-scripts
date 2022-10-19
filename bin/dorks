@@ -1,3 +1,4 @@
+#!/bin/bash
 # Based on https://gist.github.com/jhaddix/77253cea49bf4bd4bfd5d384a37ce7a4
 
 echo "GitHub dorks"

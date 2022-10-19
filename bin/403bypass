@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "403 Bypass"
 echo ""
 echo "$1/%2e$2/"

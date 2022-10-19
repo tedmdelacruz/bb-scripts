@@ -1,8 +1,10 @@
 #!/bin/bash
+# Enumerates subdomains using subfinder and notifies for new subdomains
+# Usage: 
+# scan <target_in_recon_dir>
 
 TARGET=$1
 RECON_DIR="$HOME/recon"
-
 TARGET_DIR="$RECON_DIR/$TARGET"
 
 if [ ! -d "$TARGET_DIR/.tmp" ]; then
