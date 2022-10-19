@@ -11,7 +11,7 @@ fi;
 
 cp "$TARGET_DIR/subdomains.txt" "$TARGET_DIR/.tmp/subdomains.txt"
 
-subfinder -v -dL $TARGET_DIR/wildcards.txt -o $TARGET_DIR/subdomains.txt
+subfinder -v -all -dL $TARGET_DIR/wildcards.txt -o $TARGET_DIR/subdomains.txt
 
 cat $TARGET_DIR/subdomains.txt | sort -u -o $TARGET_DIR/subdomains.txt
 
