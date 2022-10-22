@@ -1,4 +1,4 @@
-#!/bin/bash
+#/bin/bash
 # Takes screenshots using aquatone
 # Usage: 
 # scan <target_in_recon_dir>
@@ -10,5 +10,6 @@ TARGET_DIR="$RECON_DIR/$TARGET"
 cat $TARGET_DIR/http.txt | aquatone \
 -ports=80,443,8080,8081,8443,8000 \
 -resolution=800,600 -debug -threads=5 \
--chrome-path=$CHROME_PATH -out $TARGET_DIR/screenshots \
+-chrome=$CHROME_PATH \
+-out $TARGET_DIR/screenshots \
 && echo "Done taking screenshots on $TARGET" | notify -id general
