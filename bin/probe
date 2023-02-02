@@ -7,12 +7,14 @@
 FFUF_MATCHERS=200,204,307,401,403,405,500
 TARGET=$1
 FFUF_ARGS=$2
-whatweb $TARGET
-gau $TARGET
-echo $TARGET | waybackurls
 ffuf -v -r -mc $FFUF_MATCHERS $FFUF_ARGS -c -w ~/wordlists/tedm/discovery.txt -u "${TARGET}FUZZ"
 ffuf -v -r -sf -mc $FFUF_MATCHERS $FFUF_ARGS -c -w ~/wordlists/seclists/Discovery/Web-Content/common.txt -u "${TARGET}FUZZ"
 ffuf -v -r -sf -mc $FFUF_MATCHERS $FFUF_ARGS -c -w ~/wordlists/seclists/Discovery/Web-Content/quickhits.txt -u "${TARGET}FUZZ"
 if [[ -f "wordlist.txt" ]]; then
 	ffuf -v -r -sf -mc $FFUF_MATCHERS $FFUF_ARGS -c -w wordlist.txt -u "${TARGET}FUZZ"
 fi;
+
+crlfuzz -u $TARGET
+whatweb $TARGET
+gau $TARGET
+echo $TARGET | waybackurls
