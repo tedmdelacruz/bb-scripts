@@ -7,14 +7,24 @@
 FFUF_MATCHERS=200,204,307,401,403,405,500
 TARGET=$1
 FFUF_ARGS=$2
-ffuf -v -r -mc $FFUF_MATCHERS $FFUF_ARGS -c -w ~/wordlists/tedm/discovery.txt -u "${TARGET}FUZZ"
-ffuf -v -r -sf -mc $FFUF_MATCHERS $FFUF_ARGS -c -w ~/wordlists/seclists/Discovery/Web-Content/common.txt -u "${TARGET}FUZZ"
-ffuf -v -r -sf -mc $FFUF_MATCHERS $FFUF_ARGS -c -w ~/wordlists/seclists/Discovery/Web-Content/quickhits.txt -u "${TARGET}FUZZ"
+echo "Running waybackurls..."
+echo $TARGET | waybackurls
+
+WORDLISTS="/home/tedm/wordlists/tedm/discovery.txt "
+
 if [[ -f "wordlist.txt" ]]; then
-	ffuf -v -r -sf -mc $FFUF_MATCHERS $FFUF_ARGS -c -w wordlist.txt -u "${TARGET}FUZZ"
+	WORDLISTS+="$(pwd)/wordlist.txt "
 fi;
 
-crlfuzz -u $TARGET
-whatweb $TARGET
+WORDLISTS+="/home/tedm/wordlists/seclists/Discovery/Web-Content/common.txt "
+WORDLISTS+="/home/tedm/wordlists/seclists/Discovery/Web-Content/quickhits.txt "
+
+cat $WORDLISTS | ffuf -v -r -sf -mc $FFUF_MATCHERS $FFUF_ARGS -c -w - -u "${TARGET}FUZZ"
+
+echo "Running gau..."
 gau $TARGET
-echo $TARGET | waybackurls
+
+echo "Running whatweb..."
+whatweb $TARGET
+
+
