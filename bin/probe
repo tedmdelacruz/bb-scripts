@@ -23,8 +23,3 @@ cat $WORDLISTS | ffuf -v -r -sf -mc $FFUF_MATCHERS $FFUF_ARGS -c -w - -u "${TARG
 
 echo "Running gau..."
 gau $TARGET
-
-echo "Running whatweb..."
-whatweb $TARGET
-
-
