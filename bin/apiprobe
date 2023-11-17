@@ -1,0 +1,24 @@
+#!/bin/bash
+# Basic probe for a single webserver
+# Gets known archived URLS and fuzzes using several wordlists
+# Usage:
+# probe http://target.com
+
+FFUF_MATCHERS=200,204,307,401,403,405,500
+TARGET=$1
+FFUF_ARGS=$2
+echo "Running waybackurls..."
+echo $TARGET | waybackurls
+
+WORDLISTS="/home/tedm/wordlists/tedm/discovery.txt "
+
+if [[ -f "wordlist.txt" ]]; then
+	WORDLISTS+="$(pwd)/wordlist.txt "
+fi;
+
+WORDLISTS+="/home/tedm/wordlists/seclists/Discovery/Web-Content/common.txt "
+WORDLISTS+="/home/tedm/wordlists/seclists/Discovery/Web-Content/quickhits.txt "
+
+cat $WORDLISTS | ffuf -c -v -r -mc $FFUF_MATCHERS $FFUF_ARGS -w - -u "${TARGET}FUZZ"
+echo "Running gau..."
+gau $TARGET

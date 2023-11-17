@@ -4,9 +4,10 @@
 # Usage:
 # probe http://target.com
 
-FFUF_MATCHERS=200,204,307,401,403,405,500
+FFUF_MATCHERS=200,204,301,307,401,403,405,500
 TARGET=$1
 FFUF_ARGS=$2
+echo ""
 echo "Running waybackurls..."
 echo $TARGET | waybackurls
 
@@ -18,8 +19,17 @@ fi;
 
 WORDLISTS+="/home/tedm/wordlists/seclists/Discovery/Web-Content/common.txt "
 WORDLISTS+="/home/tedm/wordlists/seclists/Discovery/Web-Content/quickhits.txt "
+WORDLISTS+="/home/tedm/wordlists/bruteforce-lists/api.txt "
+WORDLISTS+="/home/tedm/wordlists/bruteforce-lists/git_config.txt "
+WORDLISTS+="/home/tedm/wordlists/bruteforce-lists/yaml.txt "
+WORDLISTS+="/home/tedm/wordlists/seclists/Discovery/Web-Content/api/api-endpoints.txt "
+WORDLISTS+="/home/tedm/wordlists/seclists/Discovery/Web-Content/api/api-seen-in-wild.txt "
+cat $WORDLISTS | ffuf -c -v -r -mc $FFUF_MATCHERS $FFUF_ARGS -w - -u "${TARGET}FUZZ"
 
-cat $WORDLISTS | ffuf -v -r -sf -mc $FFUF_MATCHERS $FFUF_ARGS -c -w - -u "${TARGET}FUZZ"
+echo ""
+echo "Guessing parameters..."
+arjun -u $TARGET
 
+echo ""
 echo "Running gau..."
 gau $TARGET
