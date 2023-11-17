@@ -24,7 +24,7 @@ if [ ! -d "$TARGET_DIR/.history" ]; then
 fi;
 
 if [ -s "$TARGET_DIR/.tmp/new.txt" ];then
-    now=$(date +%s)
+    now=$(date +%Y-%m-%d)
     cp "$TARGET_DIR/.tmp/new.txt" "$TARGET_DIR/.history/$now"
     NUM_SUBDOMAINS=$(wc -l "$TARGET_DIR/.tmp/new.txt" | awk '{print $1}')
     echo "Found $NUM_SUBDOMAINS new subdomains for target: **$TARGET**" | notify -id general
