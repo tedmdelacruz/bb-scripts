@@ -4,20 +4,26 @@
 # by comparing it to an old JSON file
 #
 # Usage:
-# jsonmonitor https://target.com/endpoints.json
+# jsonmonitor target https://target.com/endpoints.json
 
-FILE=$1
+TARGET=$1
+RECON_DIR="$HOME/recon"
+TARGET_DIR="$RECON_DIR/$TARGET"
+FILE=$2
+
 echo "Fetching $FILE..."
 
-if [ ! -d ".jsonmonitor" ]; then
-    mkdir ".jsonmonitor"
+MONITOR_BASE_DIR="$TARGET_DIR/.jsonmonitor"
+
+if [ ! -d $MONITOR_BASE_DIR ]; then
+    mkdir $MONITOR_BASE_DIR 
 fi;
 
-NEW_FILE=".jsonmonitor/file.new"
-NEW_FILE_JSON=".jsonmonitor/file.new.json"
-OLD_FILE=".jsonmonitor/file.old"
-OLD_FILE_JSON=".jsonmonitor/file.old.json"
-DIFF_FILE=".jsonmonitor/json.diff"
+NEW_FILE="$MONITOR_BASE_DIR/file.new"
+NEW_FILE_JSON="$MONITOR_BASE_DIR/file.new.json"
+OLD_FILE="$MONITOR_BASE_DIR/file.old"
+OLD_FILE_JSON="$MONITOR_BASE_DIR/file.old.json"
+DIFF_FILE="$MONITOR_BASE_DIR/json.diff"
 now=$(date +%Y-%m-%d)
 
 if [ ! -f $NEW_FILE ]; then
@@ -30,10 +36,10 @@ else
 	wget $FILE -O $NEW_FILE 
 	cat $NEW_FILE | jq > $NEW_FILE_JSON
 	diff $NEW_FILE_JSON $OLD_FILE_JSON | tee $DIFF_FILE 
-	[ -s $DIFF_FILE ] && echo "File changes detected in $(pwd)" | notify -id general
+	[ -s $DIFF_FILE ] && echo "File changes detected in $FILE" | notify -id general
 	cp $NEW_FILE $OLD_FILE
 	cp $NEW_FILE_JSON $OLD_FILE_JSON
-	cp $NEW_FILE_JSON ".jsonmonitor/$now.json"
+	cp $NEW_FILE_JSON "$MONITOR_BASE_DIR/$now.json"
 fi;
 
 
