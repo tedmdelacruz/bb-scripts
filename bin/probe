@@ -27,8 +27,13 @@ WORDLISTS+="/home/tedm/wordlists/seclists/Discovery/Web-Content/api/api-seen-in-
 cat $WORDLISTS | ffuf -c -v -r -mc $FFUF_MATCHERS $FFUF_ARGS -w - -u "${TARGET}FUZZ"
 
 echo ""
-echo "Guessing parameters..."
-arjun -u $TARGET
+if [[ -f "parameters.txt" ]]; then
+    echo "Guessing parameters with parameters.txt..."
+    arjun -u $TARGET -w "$(pwd)/parameters.txt"
+else
+    echo "Guessing parameters..."
+    arjun -u $TARGET
+fi;
 
 echo ""
 echo "Running gau..."
