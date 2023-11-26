@@ -1,0 +1,40 @@
+#!/bin/bash
+# Basic JSON differ 
+# Determines if something changed in a static JSON file
+# by comparing it to an old JSON file
+#
+# Usage:
+# jsonmonitor https://target.com/endpoints.json
+
+FILE=$1
+echo "Fetching $FILE..."
+
+if [ ! -d ".jsonmonitor" ]; then
+    mkdir ".jsonmonitor"
+fi;
+
+NEW_FILE=".jsonmonitor/file.new"
+NEW_FILE_JSON=".jsonmonitor/file.new.json"
+OLD_FILE=".jsonmonitor/file.old"
+OLD_FILE_JSON=".jsonmonitor/file.old.json"
+DIFF_FILE=".jsonmonitor/json.diff"
+now=$(date +%Y-%m-%d)
+
+if [ ! -f $NEW_FILE ]; then
+	wget $FILE -O $NEW_FILE 
+	cat $NEW_FILE | jq > $NEW_FILE_JSON
+	cp $NEW_FILE $OLD_FILE
+	cp $NEW_FILE_JSON $OLD_FILE_JSON
+else
+	rm $DIFF_FILE
+	wget $FILE -O $NEW_FILE 
+	cat $NEW_FILE | jq > $NEW_FILE_JSON
+	diff $NEW_FILE_JSON $OLD_FILE_JSON | tee $DIFF_FILE 
+	[ -s $DIFF_FILE ] && echo "File changes detected in $(pwd)" | notify -id general
+	cp $NEW_FILE $OLD_FILE
+	cp $NEW_FILE_JSON $OLD_FILE_JSON
+	cp $NEW_FILE $now.json
+fi;
+
+
+
