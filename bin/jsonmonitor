@@ -33,7 +33,7 @@ else
 	[ -s $DIFF_FILE ] && echo "File changes detected in $(pwd)" | notify -id general
 	cp $NEW_FILE $OLD_FILE
 	cp $NEW_FILE_JSON $OLD_FILE_JSON
-	cp $NEW_FILE $now.json
+	cp $NEW_FILE_JSON ".jsonmonitor/$now.json"
 fi;
 
 
