@@ -24,7 +24,7 @@ NEW_FILE_JSON="$MONITOR_BASE_DIR/file.new.json"
 OLD_FILE="$MONITOR_BASE_DIR/file.old"
 OLD_FILE_JSON="$MONITOR_BASE_DIR/file.old.json"
 DIFF_FILE="$MONITOR_BASE_DIR/json.diff"
-now=$(date +%Y-%m-%d)
+now=$(date +%Y-%m-%d_%R)
 
 if [ ! -f $NEW_FILE ]; then
 	wget $FILE -O $NEW_FILE 
