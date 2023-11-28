@@ -1,0 +1,55 @@
+#!/bin/bash
+# Basic JS and JSON monitoring tool
+# Monitors if something changed in a static JS file
+# * Requires jsbeautify to run
+#
+# Usage:
+# jsmonitor mytarget mytargetendpoints https://target.com/endpoints.json
+#
+# Extended usage: set this as an hourly cron task
+
+TARGET=$1
+IDENTIFIER=$2
+RECON_DIR="$HOME/recon"
+TARGET_DIR="$RECON_DIR/$TARGET"
+FILE=$3
+
+echo "Fetching $FILE..."
+
+MONITOR_BASE_DIR="$TARGET_DIR/.jsmonitor"
+if [ ! -d $MONITOR_BASE_DIR ]; then
+    mkdir $MONITOR_BASE_DIR 
+fi;
+
+IDENTIFIER_BASE_DIR="$MONITOR_BASE_DIR/$IDENTIFIER"
+if [ ! -d $IDENTIFIER_BASE_DIR ]; then
+    mkdir $IDENTIFIER_BASE_DIR 
+fi;
+
+NEW_FILE="$IDENTIFIER_BASE_DIR/file.new"
+NEW_FILE_JS="$IDENTIFIER_BASE_DIR/file.new.js"
+OLD_FILE="$IDENTIFIER_BASE_DIR/file.old"
+OLD_FILE_JS="$IDENTIFIER_BASE_DIR/file.old.js"
+DIFF_FILE="$IDENTIFIER_BASE_DIR/js.diff"
+now=$(date +%Y-%m-%d_%R)
+
+if [ ! -f $NEW_FILE ]; then
+	wget $FILE -O $NEW_FILE 
+	js-beautify $NEW_FILE > $NEW_FILE_JS
+	cp $NEW_FILE $OLD_FILE
+	cp $NEW_FILE_JS $OLD_FILE_JS
+else
+	rm $DIFF_FILE
+	wget $FILE -O $NEW_FILE 
+	js-beautify $NEW_FILE > $NEW_FILE_JS
+	diff $NEW_FILE_JS $OLD_FILE_JS | tee $DIFF_FILE 
+	if [ -s $DIFF_FILE ]; then
+		echo "File changes detected in $FILE at $TARGET/$IDENTIFIER" | notify -id general
+		cp $DIFF_FILE "$IDENTIFIER_BASE_DIR/$now.diff"
+	fi;
+	cp $NEW_FILE $OLD_FILE
+	cp $NEW_FILE_JS $OLD_FILE_JS
+fi;
+
+
+
