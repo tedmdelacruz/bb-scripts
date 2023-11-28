@@ -36,10 +36,12 @@ else
 	wget $FILE -O $NEW_FILE 
 	cat $NEW_FILE | jq > $NEW_FILE_JSON
 	diff $NEW_FILE_JSON $OLD_FILE_JSON | tee $DIFF_FILE 
-	[ -s $DIFF_FILE ] && echo "File changes detected in $FILE" | notify -id general
+	if [ -s $DIFF_FILE ]; then
+		echo "File changes detected in $FILE" | notify -id general
+		cp $DIFF_FILE "$MONITOR_BASE_DIR/$now.diff"
+	fi;
 	cp $NEW_FILE $OLD_FILE
 	cp $NEW_FILE_JSON $OLD_FILE_JSON
-	cp $NEW_FILE_JSON "$MONITOR_BASE_DIR/$now.json"
 fi;
 
 
