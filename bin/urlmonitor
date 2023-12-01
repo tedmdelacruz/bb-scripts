@@ -1,0 +1,51 @@
+#!/bin/bash
+# Basic URL endpoints monitoring tool
+# Monitors if new URLs are introduced in the JS files of a site
+# * Requires getJS and linkfinder to run
+#
+# Usage:
+# urlmonitor mytarget myidentifier https://target.com/
+#
+# Extended usage: set this as an hourly cron task
+
+TARGET=$1
+IDENTIFIER=$2
+RECON_DIR="$HOME/recon"
+TARGET_DIR="$RECON_DIR/$TARGET"
+SITE=$3
+
+echo "Fetching URLs from $SITE..."
+
+MONITOR_BASE_DIR="$TARGET_DIR/.urlmonitor"
+if [ ! -d $MONITOR_BASE_DIR ]; then
+    mkdir $MONITOR_BASE_DIR 
+fi;
+
+IDENTIFIER_BASE_DIR="$MONITOR_BASE_DIR/$IDENTIFIER"
+if [ ! -d $IDENTIFIER_BASE_DIR ]; then
+    mkdir $IDENTIFIER_BASE_DIR 
+fi;
+
+# Fetch JS files from site
+echo $IDENTIFIER_BASE_DIR
+getJS --insecure --url $SITE | wget -P $IDENTIFIER_BASE_DIR -i - 
+
+# Get absolute and relative URLs found in the JS files
+# and pipe them into urls.txt
+NEW_URLS="$IDENTIFIER_BASE_DIR/urls.new"
+python3 ~/tools/linkfinder/linkfinder.py -i "$IDENTIFIER_BASE_DIR/*" -o cli | sort -u | tee $NEW_URLS 
+
+# Compare the new URLs against the previous results of urlmonitor
+DIFF_URLS="$IDENTIFIER_BASE_DIR/urls.diff"
+OLD_URLS="$IDENTIFIER_BASE_DIR/urls.old"
+now=$(date +%Y-%m-%d_%R)
+
+if [ -f $OLD_URLS ]; then
+	diff $NEW_URLS $OLD_URLS | tee $DIFF_URLS
+	if [ -s $DIFF_URLS ]; then
+		echo "Change in URLs detected in $SITE at $TARGET/$IDENTIFIER" | notify -id general
+		cp $DIFF_URLS "$IDENTIFIER_BASE_DIR/$now.diff"
+	fi;
+fi;
+
+cp $NEW_URLS $OLD_URLS
