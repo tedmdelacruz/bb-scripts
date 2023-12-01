@@ -39,7 +39,6 @@ python3 ~/tools/linkfinder/linkfinder.py -i "$IDENTIFIER_BASE_DIR/*" -o cli | so
 DIFF_URLS="$IDENTIFIER_BASE_DIR/urls.diff"
 OLD_URLS="$IDENTIFIER_BASE_DIR/urls.old"
 now=$(date +%Y-%m-%d_%R)
-
 if [ -f $OLD_URLS ]; then
 	diff $NEW_URLS $OLD_URLS | tee $DIFF_URLS
 	if [ -s $DIFF_URLS ]; then
