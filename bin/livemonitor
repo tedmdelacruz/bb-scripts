@@ -1,0 +1,32 @@
+#!/bin/bash
+# Basic webserver monitoring tool
+# Monitors if there are any new webservers that returns HTTP 200 OK
+# * Requires httpx
+#
+# Usage:
+# livemonitor mytarget
+#
+# Extended usage: set this as an daily cron task
+
+TARGET=$1
+RECON_DIR="$HOME/recon"
+TARGET_DIR="$RECON_DIR/$TARGET"
+
+echo "Probing $TARGET..."
+
+DIFF_LIVE="$TARGET_DIR/live.diff"
+NEW_LIVE="$TARGET_DIR/live.new"
+KNOWN_LIVE="$TARGET_DIR/live.known"
+
+httpx -l "$TARGET_DIR/subdomains.txt" -silent -mc 200 | tee $NEW_LIVE
+
+if [ -f $NEW_LIVE ]; then
+	cat $NEW_LIVE | anew $KNOWN_LIVE > $DIFF_LIVE
+	if [ -s $DIFF_LIVE ]; then
+		echo "New live webservers detected in $TARGET" | notify -id livemonitor
+		now=$(date +%Y-%m-%d_%R)
+		cp $DIFF_LIVE "$TARGET_DIR/$now.diff"
+	fi;
+	else
+	cp $NEW_LIVE $KNOWN_LIVE
+fi;

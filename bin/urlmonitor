@@ -39,11 +39,11 @@ python3 ~/tools/linkfinder/linkfinder.py -i "$JS_FILES_DIR/*" -o cli | sort -u |
 # Compare the new URLs against the previous results of urlmonitor
 DIFF_URLS="$IDENTIFIER_BASE_DIR/urls.diff"
 KNOWN_URLS="$IDENTIFIER_BASE_DIR/urls.known"
-now=$(date +%Y-%m-%d_%R)
 if [ -f $KNOWN_URLS ]; then
 	cat $NEW_URLS | anew $KNOWN_URLS > $DIFF_URLS
 	if [ -s $DIFF_URLS ]; then
 		echo "New URLs detected in $SITE at $TARGET/$IDENTIFIER" | notify -id urlmonitor
+		now=$(date +%Y-%m-%d_%R)
 		cp $DIFF_URLS "$IDENTIFIER_BASE_DIR/$now.diff"
 	fi;
 	else
