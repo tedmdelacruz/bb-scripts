@@ -44,7 +44,7 @@ else
 	js-beautify $NEW_FILE > $NEW_FILE_JS
 	diff $NEW_FILE_JS $OLD_FILE_JS | tee $DIFF_FILE 
 	if [ -s $DIFF_FILE ]; then
-		echo "File changes detected in $FILE at $TARGET/$IDENTIFIER" | notify -id general
+		echo "File changes detected in $FILE at $TARGET/$IDENTIFIER" | notify -id jsmonitor
 		cp $DIFF_FILE "$IDENTIFIER_BASE_DIR/$now.diff"
 	fi;
 	cp $NEW_FILE $OLD_FILE

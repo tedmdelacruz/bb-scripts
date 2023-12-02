@@ -43,7 +43,7 @@ now=$(date +%Y-%m-%d_%R)
 if [ -f $OLD_URLS ]; then
 	diff $NEW_URLS $OLD_URLS | tee $DIFF_URLS
 	if [ -s $DIFF_URLS ]; then
-		echo "Change in URLs detected in $SITE at $TARGET/$IDENTIFIER" | notify -id general
+		echo "Change in URLs detected in $SITE at $TARGET/$IDENTIFIER" | notify -id urlmonitor
 		cp $DIFF_URLS "$IDENTIFIER_BASE_DIR/$now.diff"
 	fi;
 fi;
