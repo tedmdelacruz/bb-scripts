@@ -1,7 +1,7 @@
 #!/bin/bash
 # Basic URL endpoints monitoring tool
 # Monitors if new URLs are introduced in the JS files of a site
-# * Requires getJS, linkfinder, and anew to run
+# * Requires getJS, katana, linkfinder, and anew to run
 #
 # Usage:
 # urlmonitor mytarget myidentifier https://target.com/
@@ -27,9 +27,12 @@ if [ ! -d $IDENTIFIER_BASE_DIR ]; then
     mkdir $IDENTIFIER_BASE_DIR 
 fi;
 
-# Fetch JS files from site
+# Fetch JS files from site using getJS
 echo $IDENTIFIER_BASE_DIR
 getJS --insecure --url $SITE | wget -P $JS_FILES_DIR -i - 
+
+# Crawl site URLs and fetch JS files using katana
+katana -silent -u $SITE -jc -kf -all | grep "\.js" | wget -P $JS_FILES_DIR -i -
 
 # Get absolute and relative URLs found in the JS files
 # and pipe them into urls.txt
@@ -42,7 +45,7 @@ KNOWN_URLS="$IDENTIFIER_BASE_DIR/urls.known"
 if [ -f $KNOWN_URLS ]; then
 	cat $NEW_URLS | anew $KNOWN_URLS > $DIFF_URLS
 	if [ -s $DIFF_URLS ]; then
-		echo "New URLs detected in $SITE at $TARGET/$IDENTIFIER" | notify -id urlmonitor
+		echo "New URLs detected in $SITE at $TARGET/$IDENTIFIER" | notify -silent -id urlmonitor
 		now=$(date +%Y-%m-%d_%R)
 		cp $DIFF_URLS "$IDENTIFIER_BASE_DIR/$now.diff"
 	fi;
