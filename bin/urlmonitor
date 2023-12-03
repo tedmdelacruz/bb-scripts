@@ -29,7 +29,7 @@ fi;
 
 # Fetch JS files from site
 echo $IDENTIFIER_BASE_DIR
-getJS --complete --insecure --url $SITE | wget -P $JS_FILES_DIR -i - 
+getJS --insecure --url $SITE | wget -P $JS_FILES_DIR -i - 
 
 # Get absolute and relative URLs found in the JS files
 # and pipe them into urls.txt
