@@ -32,7 +32,7 @@ echo $IDENTIFIER_BASE_DIR
 getJS --insecure --url $SITE | wget -P $JS_FILES_DIR -i - 
 
 # Crawl site URLs and fetch JS files using katana
-katana -silent -u $SITE -jc -kf -all | grep "\.js" | wget -P $JS_FILES_DIR -i -
+katana -silent -u $SITE -jc -all -kf all | grep "\.js" | wget -P $JS_FILES_DIR -i -
 
 # Get absolute and relative URLs found in the JS files
 # and pipe them into urls.txt
