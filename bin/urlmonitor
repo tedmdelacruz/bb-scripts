@@ -28,16 +28,21 @@ if [ ! -d $IDENTIFIER_BASE_DIR ]; then
 fi;
 
 # Fetch JS files from site using getJS
-echo $IDENTIFIER_BASE_DIR
 getJS --insecure --url $SITE | wget -P $JS_FILES_DIR -i - 
 
 # Crawl site URLs and fetch JS files using katana
-katana -silent -u $SITE -jc -all -kf all | grep "\.js" | wget -P $JS_FILES_DIR -i -
+katana -silent -u $SITE -jc -kf all | grep "\.js" | wget -P $JS_FILES_DIR -i -
 
 # Get absolute and relative URLs found in the JS files
 # and pipe them into urls.txt
 NEW_URLS="$IDENTIFIER_BASE_DIR/urls.new"
-python3 ~/tools/linkfinder/linkfinder.py -i "$JS_FILES_DIR/*" -o cli | sort -u | tee $NEW_URLS 
+IGNORE_PATTERNS="$IDENTIFIER_BASE_DIR/urls.ignore"
+if [ -f $IGNORE_PATTERNS ]; then
+	IGNORE=$(tr '\n' '|' < $IGNORE_PATTERNS)
+	python3 ~/tools/linkfinder/linkfinder.py -i "$JS_FILES_DIR/*" -o cli | grep -vE "${IGNORE%?}" | sort -u | tee $NEW_URLS 
+	else
+	python3 ~/tools/linkfinder/linkfinder.py -i "$JS_FILES_DIR/*" -o cli | sort -u | tee $NEW_URLS 
+fi;
 
 # Compare the new URLs against the previous results of urlmonitor
 DIFF_URLS="$IDENTIFIER_BASE_DIR/urls.diff"
