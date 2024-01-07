@@ -23,6 +23,8 @@ cat $TARGET_DIR/subdomains.txt | anew $TARGET_DIR/.tmp/subdomains.txt > $TARGET_
 
 cat $TARGET_DIR/subdomains.txt | httpx -silent > $TARGET_DIR/http.txt
 
+cat $TARGET_DIR/.tmp/new.txt | httpx -silent -mc 200 | anew $TARGET_DIR/live.known
+
 if [ ! -d "$TARGET_DIR/.history" ]; then
     mkdir "$TARGET_DIR/.history"
 fi;
