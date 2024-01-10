@@ -13,9 +13,9 @@ fi;
 
 cp "$TARGET_DIR/subdomains.txt" "$TARGET_DIR/.tmp/subdomains.txt"
 
-subfinder -v -all -dL $TARGET_DIR/wildcards.txt -o $TARGET_DIR/subfinder-subdomains.txt
+amass enum -passive -df $TARGET_DIR/wildcards.txt -o $TARGET_DIR/amass-subdomains.txt
 
-amass enum -passive -df $TARGET_DIR/amass-subdomains.txt
+subfinder -v -all -dL $TARGET_DIR/wildcards.txt -o $TARGET_DIR/subfinder-subdomains.txt
 
 cat $TARGET_DIR/subfinder-subdomains.txt $TARGET_DIR/amass-subdomains.txt | sort -u -o $TARGET_DIR/subdomains.txt
 
@@ -24,7 +24,6 @@ cat $TARGET_DIR/subdomains.txt | anew $TARGET_DIR/.tmp/subdomains.txt > $TARGET_
 cat $TARGET_DIR/.tmp/new.txt | httpx -silent -mc 200 | anew $TARGET_DIR/live.known
 
 cat $TARGET_DIR/subdomains.txt | httpx -o $TARGET_DIR/http.txt
-
 
 if [ ! -d "$TARGET_DIR/.history" ]; then
     mkdir "$TARGET_DIR/.history"
