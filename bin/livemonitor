@@ -19,9 +19,9 @@ if [ ! -d $MONITOR_BASE_DIR ]; then
     mkdir $MONITOR_BASE_DIR 
 fi;
 
-DIFF_LIVE="$TARGET_DIR/$MONITOR_BASE_DIR/live.diff"
-NEW_LIVE="$TARGET_DIR/$MONITOR_BASE_DIR/live.new"
-KNOWN_LIVE="$TARGET_DIR/$MONITOR_BASE_DIR/live.known"
+DIFF_LIVE="$MONITOR_BASE_DIR/live.diff"
+NEW_LIVE="$MONITOR_BASE_DIR/live.new"
+KNOWN_LIVE="$MONITOR_BASE_DIR/live.known"
 
 httpx -l "$TARGET_DIR/subdomains.txt" -silent -mc 200 | tee $NEW_LIVE
 

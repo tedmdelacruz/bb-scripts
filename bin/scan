@@ -13,11 +13,9 @@ fi;
 
 cp "$TARGET_DIR/subdomains.txt" "$TARGET_DIR/.tmp/subdomains.txt"
 
-# amass enum -passive -df $TARGET_DIR/wildcards.txt -o $TARGET_DIR/amass-subdomains.txt
-
 subfinder -v -all -dL $TARGET_DIR/wildcards.txt -o $TARGET_DIR/subfinder-subdomains.txt
 
-cat $TARGET_DIR/subfinder-subdomains.txt $TARGET_DIR/amass-subdomains.txt | sort -u -o $TARGET_DIR/subdomains.txt
+cat $TARGET_DIR/subfinder-subdomains.txt | sort -u -o $TARGET_DIR/subdomains.txt
 
 cat $TARGET_DIR/subdomains.txt | anew $TARGET_DIR/.tmp/subdomains.txt > $TARGET_DIR/.tmp/new.txt
 
