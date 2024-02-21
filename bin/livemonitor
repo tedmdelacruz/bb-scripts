@@ -28,9 +28,10 @@ httpx -l "$TARGET_DIR/subdomains.txt" -silent -mc 200 | tee $NEW_LIVE
 if [ -f $NEW_LIVE ]; then
 	cat $NEW_LIVE | anew $KNOWN_LIVE > $DIFF_LIVE
 	if [ -s $DIFF_LIVE ]; then
-		echo "New live webservers detected in $TARGET" | notify -silent -id livemonitor
 		now=$(date +%Y-%m-%d_%R)
-		cp $DIFF_LIVE "$MONITOR_BASE_DIR/$now.diff"
+		TIMESTAMPED_DIFF_FILE="$MONITOR_BASE_DIR/$now.diff"
+		cp $DIFF_LIVE $TIMESTAMPED_DIFF_FILE
+		echo "New live webservers detected in $TARGET "'```'$TIMESTAMPED_DIFF_FILE'```' | notify -silent -id livemonitor
 	fi;
 	else
 	cp $NEW_LIVE $KNOWN_LIVE

@@ -12,6 +12,7 @@ echo "Running waybackurls..."
 echo $TARGET | waybackurls
 
 WORDLISTS="/home/tedm/wordlists/tedm/discovery.txt "
+WORDLISTS+="/home/tedm/wordlists/tedm/etc.txt "
 
 if [[ -f "wordlist.txt" ]]; then
 	WORDLISTS+="$(pwd)/wordlist.txt "

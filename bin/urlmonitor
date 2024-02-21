@@ -50,9 +50,10 @@ KNOWN_URLS="$IDENTIFIER_BASE_DIR/urls.known"
 if [ -f $KNOWN_URLS ]; then
 	cat $NEW_URLS | anew $KNOWN_URLS > $DIFF_URLS
 	if [ -s $DIFF_URLS ]; then
-		echo "New URLs detected in $SITE at $TARGET/$IDENTIFIER" | notify -silent -id urlmonitor
 		now=$(date +%Y-%m-%d_%R)
-		cp $DIFF_URLS "$IDENTIFIER_BASE_DIR/$now.diff"
+		TIMESTAMPED_DIFF_FILE="$IDENTIFIER_BASE_DIR/$now.diff"
+		cp $DIFF_URLS $TIMESTAMPED_DIFF_FILE
+		echo "New live webservers detected in $SITE "'```'$TIMESTAMPED_DIFF_FILE'```' | notify -silent -id urlmonitor
 	fi;
 	else
 	cp $NEW_URLS $KNOWN_URLS

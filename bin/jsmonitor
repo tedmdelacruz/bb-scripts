@@ -43,9 +43,11 @@ else
 	wget $FILE -O $NEW_FILE 
 	js-beautify $NEW_FILE > $NEW_FILE_JS
 	diff $NEW_FILE_JS $OLD_FILE_JS | tee $DIFF_FILE 
+	echo "$IDENTIFIER_BASE_DIR/$now.diff"
 	if [ -s $DIFF_FILE ]; then
-		echo "File changes detected in $FILE at $TARGET/$IDENTIFIER" | notify -silent -id jsmonitor
-		cp $DIFF_FILE "$IDENTIFIER_BASE_DIR/$now.diff"
+		TIMESTAMPED_DIFF_FILE="$IDENTIFIER_BASE_DIR/$now.diff"
+		cp $DIFF_FILE $TIMESTAMPED_DIFF_FILE
+		echo "File changes detected in $FILE "'```'$TIMESTAMPED_DIFF_FILE'```' | notify -silent -id jsmonitor
 	fi;
 	cp $NEW_FILE $OLD_FILE
 	cp $NEW_FILE_JS $OLD_FILE_JS
