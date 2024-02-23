@@ -53,7 +53,7 @@ if [ -f $KNOWN_URLS ]; then
 		now=$(date +%Y-%m-%d_%R)
 		TIMESTAMPED_DIFF_FILE="$IDENTIFIER_BASE_DIR/$now.diff"
 		cp $DIFF_URLS $TIMESTAMPED_DIFF_FILE
-		echo "New live webservers detected in $SITE "'```'$TIMESTAMPED_DIFF_FILE'```' | notify -silent -id urlmonitor
+		echo "New URLS detected in $SITE "'```'$TIMESTAMPED_DIFF_FILE'```' | notify -silent -id urlmonitor
 	fi;
 	else
 	cp $NEW_URLS $KNOWN_URLS
