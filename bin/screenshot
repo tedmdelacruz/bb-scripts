@@ -7,9 +7,5 @@ TARGET=$1
 RECON_DIR="$HOME/recon"
 TARGET_DIR="$RECON_DIR/$TARGET"
 
-cat $TARGET_DIR/http.txt | aquatone \
--ports=80,443,8080,8081,8000,1234 \
--thumbnail-size=800,600 -threads=5 \
--chrome-path=$CHROME_PATH \
--out $TARGET_DIR/screenshots \
+gowitness file -f $TARGET_DIR/http.txt -X 800 -Y 600
 && echo "Done taking screenshots on $TARGET" | notify -id general
