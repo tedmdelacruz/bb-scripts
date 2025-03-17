@@ -21,7 +21,7 @@ DOWNLOADS_DIR = 'fetched-webpages'
 
 def generate_random_string(length=16):
     characters = string.ascii_letters + string.digits
-    return ''.join(random.choices(characters, k=length))
+    return ''.join(random.choices(characters.lower(), k=length))
 
 # Function to download a single JS file
 def download_js_file(url, webpage_url, verbose):
@@ -40,32 +40,28 @@ def download_js_file(url, webpage_url, verbose):
                 secho(f"[FAILED] {url} - HTTP status: {response.status_code}", fg='red')
     except Exception as e:
         if verbose:
-            secho(f"[FAILED] {url} - {e}", fg='red')
+            secho(f"[FAILED] {url}", fg='red')
 
 # Function to download a single webpage
 def download_webpage(url, verbose):
     try:
         response = requests.get(url)
-        if response.status_code == 200:
-            filename = os.path.join(DOWNLOADS_DIR, generate_random_string() + ".html")
-            with open(filename, 'wb') as file:
-                file.write(f"<!-- Webpage URL: {url}-->\n".encode())
-                file.write(response.content)
-            if verbose:
-                secho(f"[OK] {url}", fg='green')
-        else:
-            if verbose:
-                secho(f"[FAILED] {url} - HTTP status: {response.status_code}", fg='red')
+        filename = os.path.join(DOWNLOADS_DIR, generate_random_string() + ".html")
+        with open(filename, 'wb') as file:
+            file.write(f"<!-- Webpage URL: {url}-->\n".encode())
+            file.write(response.content)
+        if verbose:
+            secho(f"[OK] {url}", fg='green')
     except Exception as e:
         if verbose:
-            secho(f"[FAILED] {url} - {e}", fg='red')
+            secho(f"[FAILED] {url}", fg='red')
 
 def fetch_website(url, verbose):
     """Fetches the HTML content of the website and all of its JavaScript resources"""
     try:
         response = requests.get(url)
         if verbose:
-            secho(f"[INFO] Downloading webpage at {url}", fg="bright_black")
+            secho(f"[INFO] Downloading webpage at {url}...", fg="bright_black")
         download_webpage(url, verbose)
         soup = BeautifulSoup(response.content, 'html.parser')
         js_files = set()
@@ -82,12 +78,11 @@ def fetch_website(url, verbose):
                 secho(f"[INFO] No JS files in {url}", fg="bright_black")
             return
         if verbose:
-            secho(f"[INFO] Found {len(js_files)} JS files at {url}", fg="bright_black")
+            secho(f"[INFO] Downloading {len(js_files)} JS files at {url}...", fg="bright_black")
         for js_file in js_files:
             if not any(lib in js_file for lib in COMMON_LIBRARIES):
                 download_js_file(urljoin(url, js_file), url, verbose)
-    except Exception as e:
-        secho(e, fg="red")
+    except Exception:
         pass
 
 @command()
@@ -107,7 +102,7 @@ def main(threads, verbose):
 
     queue = Queue()
     if verbose:
-        secho(f"Received {len(websites)} websites.", fg="blue")
+        secho(f"Received {len(websites)} websites", fg="blue")
     for website in websites:
         queue.put(website)
 
