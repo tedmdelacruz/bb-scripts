@@ -11,7 +11,9 @@ if [ ! -d "$TARGET_DIR/.tmp" ]; then
     mkdir "$TARGET_DIR/.tmp"
 fi;
 
-cp "$TARGET_DIR/subdomains.txt" "$TARGET_DIR/.tmp/subdomains.txt"
+if [ -s "$TARGET_DIR/subdomains.txt" ];then
+    cp "$TARGET_DIR/subdomains.txt" "$TARGET_DIR/.tmp/subdomains.txt"
+fi;
 
 subfinder -v -all -dL $TARGET_DIR/wildcards.txt -o $TARGET_DIR/subfinder-subdomains.txt
 

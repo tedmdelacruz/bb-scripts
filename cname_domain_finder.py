@@ -52,7 +52,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Gather CNAME records from a list of domains.")
     parser.add_argument('-t', type=int, default=1, help="Number of concurrent threads to run the CNAME queries")
-    parser.add_argument('output_file', nargs='?', help="Optional output file to write the results")
+    parser.add_argument('--output-file', nargs='?', help="Optional output file to write the results")
 
     args = parser.parse_args()
 
