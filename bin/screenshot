@@ -7,5 +7,5 @@ TARGET=$1
 RECON_DIR="$HOME/recon"
 TARGET_DIR="$RECON_DIR/$TARGET"
 
-gowitness -t 20 file -f $TARGET_DIR/http.txt -X 800 -Y 600 -P $TARGET_DIR/screenshots \
+gowitness -t 5 file -f $TARGET_DIR/http.txt -X 800 -Y 600 -P $TARGET_DIR/screenshots \
 && echo "Done taking screenshots on $TARGET" | notify -id general

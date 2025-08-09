@@ -1,0 +1,7 @@
+#!/bin/bash
+
+pattern=$1
+find . -type f | while read file; do 
+	first_line=$(head -n1 "$file") 
+	grep -roP --color=auto ".{0,20}$pattern.{0,70}" "$file" | sed "s|^|$first_line >>> |"
+done
