@@ -1,0 +1,42 @@
+discord_webhook_url: https://discord.com/api/webhooks/YOUR_WEBHOOK_URL
+keywords:
+- name: API Keys
+  patterns:
+  - api[_-]?key["\']?\s*[:=]\s*["\'][^"\']+["\']
+  - secret[_-]?key["\']?\s*[:=]\s*["\'][^"\']+["\']
+  - access[_-]?token["\']?\s*[:=]\s*["\'][^"\']+["\']
+- name: Database Credentials
+  patterns:
+  - password["\']?\s*[:=]\s*["\'][^"\']+["\']
+  - db[_-]?pass["\']?\s*[:=]\s*["\'][^"\']+["\']
+  - mysql://[^"\'\s]+
+  - postgres://[^"\'\s]+
+- name: Internal URLs
+  patterns:
+  - https?://(?:localhost|127\.0\.0\.1|10\.|192\.168\.|172\.(?:1[6-9]|2\d|3[01])\.)[\w\.-]+
+  - \.local["\'\s/]
+  - \.internal["\'\s/]
+  - \.corp["\'\s/]
+- name: AWS Credentials
+  patterns:
+  - AKIA[0-9A-Z]{16}
+  - aws[_-]?access[_-]?key["\']?\s*[:=]\s*["\'][^"\']+["\']
+  - aws[_-]?secret["\']?\s*[:=]\s*["\'][^"\']+["\']
+- name: JWT Tokens
+  patterns:
+  - eyJ[A-Za-z0-9_-]*\.eyJ[A-Za-z0-9_-]*\.[A-Za-z0-9_-]*
+  - eyJ
+- name: Private Keys
+  patterns:
+  - -----BEGIN\s+(?:RSA\s+)?PRIVATE\s+KEY-----
+  - -----BEGIN\s+OPENSSH\s+PRIVATE\s+KEY-----
+- name: Google API Keys
+  patterns:
+  - AIza[0-9A-Za-z_-]{35}
+- name: Slack Tokens
+  patterns:
+  - xox[baprs]-[0-9a-zA-Z]{10,48}
+- name: GitHub Tokens
+  patterns:
+  - ghp_[0-9a-zA-Z]{36}
+  - github_pat_[0-9a-zA-Z_]{82}

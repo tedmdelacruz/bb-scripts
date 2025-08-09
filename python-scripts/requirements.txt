@@ -1,0 +1,6 @@
+selenium>=4.0.0
+beautifulsoup4>=4.9.0
+PyYAML>=5.4.0
+requests>=2.25.0
+click>=8.0.0
+discord-notify>=1.0.0
