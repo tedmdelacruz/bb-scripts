@@ -1,3 +1,17 @@
+#!/usr/bin/env python3
+
+"""
+CNAME Domain Finder - Multi-threaded CNAME Record Discovery Tool
+
+This script reads domains from stdin and discovers their CNAME records using concurrent DNS queries.
+It outputs unique CNAME records to stdout and saves detailed query results to cname_queries.txt.
+Supports configurable threading for performance optimization.
+
+Usage:
+    cat domains.txt | python3 cname_domain_finder.py -t 10 output.txt
+    echo "example.com" | python3 cname_domain_finder.py
+"""
+
 import dns.resolver
 import sys
 import concurrent.futures

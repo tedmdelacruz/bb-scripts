@@ -82,7 +82,7 @@ Scripts are designed for cron automation:
 The `keyword_hunter.py` script uses `config.yaml` for:
 - **Discord webhook URL**: For automated notifications
 - **Keyword patterns**: Regex patterns grouped by category (API keys, secrets, internal URLs, etc.)
-- **Sample patterns included**: JWT tokens, AWS credentials, Vite/Directus environment variables, GitHub tokens
+- **Sample patterns included**: JWT tokens, AWS credentials, GitHub tokens
 
 ### Integration Features
 - **Automated workflow**: `livemonitor` automatically runs keyword hunting on newly discovered websites

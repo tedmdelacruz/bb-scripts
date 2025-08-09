@@ -1,3 +1,17 @@
+#!/usr/bin/env python3
+
+"""
+JavaScript File Downloader - Multi-threaded JS File Discovery and Download Tool
+
+This script discovers and downloads JavaScript files from web pages provided via stdin.
+It filters out common libraries (jQuery, Bootstrap, etc.) and saves unique JS files with
+source attribution. Supports multi-threading for concurrent downloads and verbose output.
+
+Usage:
+    cat urls.txt | python3 js_downloader.py -t 5 -v
+    echo "https://example.com" | python3 js_downloader.py --threads 10 --verbose
+"""
+
 import os
 import requests
 import threading

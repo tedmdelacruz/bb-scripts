@@ -1,5 +1,25 @@
 #!/usr/bin/env python3
 
+"""
+Keyword Hunter - Selenium-based Security Analysis Tool
+
+This script analyzes web pages and JavaScript files for sensitive information using configurable
+regex patterns. It handles dynamic content with Selenium, filters common JS libraries, and sends
+Discord notifications for security findings. Designed for automated security assessment workflows.
+
+Features:
+- Dynamic content analysis with Selenium WebDriver
+- Configurable regex patterns for different security categories
+- JavaScript file discovery and analysis
+- Discord notifications via discord-notify library
+- Library filtering to reduce false positives
+- Integration with reconnaissance pipelines
+
+Usage:
+    python3 keyword_hunter.py -u https://example.com -c config.yaml
+    echo "https://example.com" | python3 keyword_hunter.py
+"""
+
 import sys
 import re
 import yaml
