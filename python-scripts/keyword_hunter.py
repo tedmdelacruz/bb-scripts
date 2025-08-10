@@ -205,6 +205,7 @@ class KeywordHunter:
             message += f"**{finding['group']}**\n"
             message += f"• Match: `{finding['match'][:100]}...` \n"
             message += f"• Source: {finding['source_url']}\n"
+            message += f"• Context: {finding['line_context'][:300]}\n\n"
             message += f"• Type: {finding['content_type']}\n\n"
             
         if len(self.findings) > 3:
