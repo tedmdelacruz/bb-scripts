@@ -25,6 +25,7 @@ import re
 import yaml
 import argparse
 import requests
+import os
 from urllib.parse import urljoin, urlparse
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -231,6 +232,11 @@ def main():
     parser.add_argument('-c', '--config', default='config.yaml', help='Config file path')
     
     args = parser.parse_args()
+    
+    # If config path is relative, make it relative to script directory
+    if not os.path.isabs(args.config):
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        args.config = os.path.join(script_dir, args.config)
     
     # Get URL from argument or stdin
     if args.url:

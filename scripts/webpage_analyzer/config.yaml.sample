@@ -1,0 +1,32 @@
+anthropic_api_key: YOUR_ANTHROPIC_API_KEY
+discord_webhook_url: https://discord.com/api/webhooks/YOUR_WEBHOOK_URL
+
+# Categories for webpage classification
+categories:
+  login_portal:
+    description: "Login pages, authentication portals, and sign-in forms"
+  admin_panel:
+    description: "Administrative interfaces, control panels, and management dashboards"
+  api_documentation:
+    description: "API documentation, developer portals, and technical documentation"
+  sensitive_data:
+    description: "Pages containing potentially sensitive information like user data, credentials, or internal systems"
+  cloud_services:
+    description: "Cloud service interfaces, AWS/Azure/GCP consoles, and related tools"
+  development_tools:
+    description: "Development environments, CI/CD tools, code repositories, and staging environments"
+  database_interfaces:
+    description: "Database management tools, query interfaces, and data administration panels"
+  monitoring_tools:
+    description: "System monitoring, logging interfaces, and operational dashboards"
+  file_sharing:
+    description: "File upload/download portals, document sharing, and storage interfaces"
+  internal_systems:
+    description: "Internal company systems, employee portals, and corporate applications"
+
+# Categories that should trigger Discord notifications
+notify_categories:
+  - admin_panel
+  - sensitive_data
+  - database_interfaces
+  - internal_systems

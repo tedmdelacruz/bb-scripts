@@ -36,14 +36,21 @@ if [ -f $NEW_LIVE ]; then
 		# If 20 or fewer results, also send the list of new websites
 		NUM_NEW=$(wc -l < $DIFF_LIVE)
 		if [ $NUM_NEW -le 20 ]; then
-			echo "New live websites for $TARGET:"$'\n'"$(cat $DIFF_LIVE)" | notify -silent -id livemonitor
+			echo "\n$(cat $DIFF_LIVE)" | notify -silent -id livemonitor
 		fi
 		
 		# Run keyword_hunter.py on each new live website
 		echo "Running keyword hunter on new live websites..."
 		while IFS= read -r url; do
 			echo "Hunting keywords in: $url"
-			python3 "$HOME/tools/bb-scripts/python-scripts/keyword_hunter.py" -u "$url" -c "$HOME/tools/bb-scripts/python-scripts/config.yaml"
+			python3 "$HOME/tools/bb-scripts/scripts/keyword_hunter/keyword_hunter.py" -u "$url" -c "$HOME/tools/bb-scripts/scripts/keyword_hunter/config.yaml"
+		done < $DIFF_LIVE
+		
+		# Run webpage_analyzer.py on each new live website
+		echo "Running webpage analyzer on new live websites..."
+		while IFS= read -r url; do
+			echo "Analyzing webpage: $url"
+			python3 "$HOME/tools/bb-scripts/scripts/webpage_analyzer/webpage_analyzer.py" -u "$url" -c "$HOME/tools/bb-scripts/scripts/webpage_analyzer/config.yaml"
 		done < $DIFF_LIVE
 	fi;
 	else

@@ -1,0 +1,7 @@
+selenium>=4.0.0
+beautifulsoup4>=4.9.0
+PyYAML>=5.4.0
+requests>=2.25.0
+discord-notify>=1.0.0
+pydantic-ai>=0.0.8
+pydantic>=2.0.0
