@@ -41,7 +41,8 @@ COMMON_LIBRARIES = [
     'jquery', 'bootstrap', 'angular', 'react', 'vue', 'lodash', 'moment', 
     'underscore', 'backbone', 'ember', 'knockout', 'mootools', 'prototype',
     'dojo', 'extjs', 'yui', 'zepto', 'axios', 'googleapis', 'cloudflare',
-    'fontawesome', 'google-analytics', 'gtag', 'facebook', 'twitter'
+    'fontawesome', 'google-analytics', 'gtag', 'facebook', 'twitter', 'crazyegg',
+    'gtm', 'polyfill', 'vendor'
 ]
 
 class KeywordHunter:

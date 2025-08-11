@@ -1,6 +1,6 @@
 #!/bin/bash
 # Basic webserver monitoring tool
-# Monitors if there are any new webservers that returns HTTP 200 OK
+# Monitors if there are any new webservers that returns TTP 200 OK
 # * Requires httpx
 #
 # Usage:
@@ -23,7 +23,7 @@ DIFF_LIVE="$MONITOR_BASE_DIR/live.diff"
 NEW_LIVE="$MONITOR_BASE_DIR/live.new"
 KNOWN_LIVE="$MONITOR_BASE_DIR/live.known"
 
-httpx -l "$TARGET_DIR/subdomains.txt" -silent -mc 200 | tee $NEW_LIVE
+/root/go/bin/httpx -l "$TARGET_DIR/subdomains.txt" -silent -mc 200 | tee $NEW_LIVE
 
 if [ -f $NEW_LIVE ]; then
 	cat $NEW_LIVE | anew $KNOWN_LIVE > $DIFF_LIVE
@@ -43,14 +43,14 @@ if [ -f $NEW_LIVE ]; then
 		echo "Running keyword hunter on new live websites..."
 		while IFS= read -r url; do
 			echo "Hunting keywords in: $url"
-			python3 "$HOME/tools/bb-scripts/scripts/keyword_hunter/keyword_hunter.py" -u "$url" -c "$HOME/tools/bb-scripts/scripts/keyword_hunter/config.yaml"
+			/root/.pyenv/shims/python3 "$HOME/tools/bb-scripts/scripts/keyword_hunter/keyword_hunter.py" -u "$url" -c "$HOME/tools/bb-scripts/scripts/keyword_hunter/config.yaml"
 		done < $DIFF_LIVE
 		
 		# Run webpage_analyzer.py on each new live website
 		echo "Running webpage analyzer on new live websites..."
 		while IFS= read -r url; do
 			echo "Analyzing webpage: $url"
-			python3 "$HOME/tools/bb-scripts/scripts/webpage_analyzer/webpage_analyzer.py" -u "$url" -c "$HOME/tools/bb-scripts/scripts/webpage_analyzer/config.yaml"
+			/root/.pyenv/shims/python3 "$HOME/tools/bb-scripts/scripts/webpage_analyzer/webpage_analyzer.py" -u "$url" -c "$HOME/tools/bb-scripts/scripts/webpage_analyzer/config.yaml"
 		done < $DIFF_LIVE
 	fi;
 	else
