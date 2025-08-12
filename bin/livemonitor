@@ -36,7 +36,7 @@ if [ -f $NEW_LIVE ]; then
 		# If 20 or fewer results, also send the list of new websites
 		NUM_NEW=$(wc -l < $DIFF_LIVE)
 		if [ $NUM_NEW -le 20 ]; then
-			echo "\n$(cat $DIFF_LIVE)" | notify -silent -id livemonitor
+			echo "```$(cat $DIFF_LIVE)```" | notify -silent -id livemonitor
 		fi
 		
 		# Run keyword_hunter.py on each new live website
