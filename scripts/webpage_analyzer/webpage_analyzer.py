@@ -208,6 +208,10 @@ Choose only ONE category from the predefined list that best represents the prima
         content_data = self.extract_content(url)
         if not content_data:
             return
+        
+        # Don't bother with analysis if content is barely contains anything
+        if len(content_data["content"]) < 100:
+            return
             
         # Analyze with AI
         analysis = self.analyze_content(content_data)
